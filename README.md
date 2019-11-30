@@ -16,7 +16,7 @@ O objetivo do projeto é selecionar um conjunto máximo de tarefas compatíveis 
 Weighted Job Scheduling.
 
 ## Screenshots
-![](demonstraçao.gif)
+![](demonstracao.gif)
 
 ## Instalação 
 **Linguagem**: JavaScript<br>
