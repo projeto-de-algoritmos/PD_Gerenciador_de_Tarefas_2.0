@@ -32,7 +32,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="index.html"><strong>Home</strong></a>
+              <a class="nav-link" href="../index.html"><strong>Home</strong></a>
             </li>
           </ul>
         </div>
@@ -46,10 +46,13 @@
     </nav>
 
 	<center style="margin: 30px;">
+		<strong id="labelsumWeight" style="visibility: hidden;">
+			Peso total obtido: <span id="spanSumWeight"></span>
+		</strong>
 		<table id="tableTask"></table>
 		<center>
-			<button onclick="intervalScheduling()" class="btn btn-primary" class="form-control" 
-			style="margin-top: 50px;">Enviar</button>	
+			<button onclick="solve()" class="btn btn-primary" class="form-control" 
+			style="margin-top: 5vh;">Enviar</button>	
 		</center>
 	</center>
 		
@@ -57,7 +60,7 @@
 		let [qtdtask,qtdsched] = getInput();
 		inicializeArrays(qtdtask);
 		createTable(qtdtask,qtdsched);
-		animationSetup();
+		animationSetup(qtdsched);
 	</script>
 </body>
 </html>
