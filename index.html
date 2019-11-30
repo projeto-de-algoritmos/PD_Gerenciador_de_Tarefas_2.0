@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Home</title>
+	<meta charset="utf-8">
+	<!--Bootstrap-->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+	<link rel="stylesheet" href="styles.css"/>
+
+	<!-- Font -->
+	<link href="https://fonts.googleapis.com/css?family=PT+Serif&display=swap" rel="stylesheet">
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark mb-5" 
+		style="background-color: rgba(25,120,255,1);">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+           <img src="icon.png" width="50" height="50">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="index.html"><strong>Home</strong></a>
+            </li>
+          </ul>
+        </div>
+        
+        <div class="collapse navbar-collapse">
+	        <div class="navbar-nav mr-auto">
+	        		<h2 style="color: white;">Gerenciador de Tarefas</h2>	
+	        </div>
+      	</div>
+      </div>
+    </nav>
+
+	<div id="mainDiv">
+		<div class="card">
+			<div class="card-body">
+				<div class="form-group col-md-7">
+					<label for="qtdtask">Insira a quantidade de tarefas:</label>
+					<input type="number" id="qtdtask" name="qtdtask" min="1" max="25" 
+					class="form-control">
+				</div>
+				<div class="form-group col-md-7">
+					<label for="qtdsched">Insira a quantidade de horários:</label>
+					<input type="number" id="qtdsched" name="qtdsched" min="1" max="25" 
+					class="form-control">
+				</div>
+				<button onclick="submitTask()" class="btn btn-primary" class="form-control" 
+				style="float: right; margin-top: -50px;">Enviar</button>
+			</div>	
+		</div>
+	</div>
+
+	<script>
+
+		let dp = [0];
+		let next = [0];
+		let jobs = [{n: 0, begin: 0, end: 0, weight: 0},
+					{n: 2, begin: 3, end: 5, weight: 20}, 
+					{n: 1, begin: 1, end: 2, weight: 50}, 
+					{n: 3, begin: 6, end: 19, weight: 100}, 
+        			{n: 4, begin: 2, end: 100, weight: 200}];
+
+		/*let jobs = [{n: 0, begin: 0, end: 0, weight: 0},
+					{n: 8,begin: 8,end: 11,weight: 3},
+					{n: 1,begin: 1,end: 4,weight: 5},
+					{n: 7,begin: 6,end: 10,weight: 8},
+					{n: 2,begin: 3,end: 5,weight: 2},
+					{n: 6,begin: 5,end: 9,weight: 4},
+					{n: 3,begin: 0,end: 5,weight: 4},
+					{n: 5,begin: 3,end: 8,weight: 1},
+              		{n: 4,begin: 4,end: 7,weight: 8}];*/
+
+		function weightedJobScheduling(j){
+			if(dp[j] == undefined)
+				dp[j] = Math.max(jobs[j].weight + weightedJobScheduling(next[j]),weightedJobScheduling(j-1)); 
+
+			return dp[j];
+		}
+
+		function findNext(jobs){
+			for(let i = jobs.length - 1;i > 0;i--){
+				let p = i-1;
+				while(jobs[i].begin < jobs[p].end) p--;
+				next[i] = p;
+			}
+		}
+
+		function findSolution(j,solution){
+			if(j == 0) return; 
+
+			if(jobs[j].weight + dp[next[j]] > dp[j-1]){
+				solution.push(jobs[j].n);
+				findSolution(next[j],solution);
+			}
+			else{
+				findSolution(j-1,solution);
+			}
+
+		}
+
+		function solve(jobs){
+			let solution = [];
+			jobs.sort((A, B) => A.end - B.end);
+
+			console.log(jobs);
+
+			findNext(jobs);
+			console.log(next);
+			
+			for(let i = 1;i <= jobs.length;i++) dp[i] = undefined;
+
+			console.log(weightedJobScheduling(jobs.length - 1));
+
+			findSolution(jobs.length - 1,solution);
+			console.log(solution);
+		}
+
+		solve(jobs);
+
+	</script>
+</body>
+</html>
